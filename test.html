@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day1 · JS 入門 + DOM</title>
+  <link rel="stylesheet" href="../slides.css" />
+</head>
+<body>
+
+  <!-- 1. 封面 -->
+  <section class="slide cover">
+    <p class="kicker">Day 1 · 第 7 堂</p>
+    <h1>JS 入門 + DOM</h1>
+    <p class="sub">讓頁面動起來——今天你會做出一個會互動的成品並上線</p>
+  </section>
+
+  <!-- 2. 這堂解決什麼問題 -->
+  <section class="slide">
+    <h2>這堂解決什麼問題？</h2>
+    <p class="hook">
+      HTML 有結構、CSS 有外觀——<br />
+      但頁面還是<strong>死的</strong>：按什麼都沒反應
+    </p>
+    <p class="muted">
+      <b>JavaScript</b> 負責「行為」：按下去有反應、內容會變、隨機會動<br />
+      今天的焦點時刻：親手做一個<b>擲硬幣</b>小應用，<b>部署上線</b>給朋友玩
+    </p>
+    <div class="aside">
+      ⚡ 為什麼重要：這是今天「我的東西真的在網路上、而且會動」的回饋感高峰——三種語言第一次合體
+    </div>
+  </section>
+
+  <!-- 3. 待辦清單 -->
+  <section class="slide">
+    <h2>這堂的待辦清單</h2>
+    <ul class="checklist">
+      <li>⬜️<span>JS 是什麼、用 Console 玩起來</span></li>
+      <li>⬜️<span>變數與型別（對照 Python）</span></li>
+      <li>⬜️<span>DOM 操作：抓元素、改畫面</span></li>
+      <li>⬜️<span>事件與亂數：<code>addEventListener</code> / <code>Math.random</code></span></li>
+    </ul>
+  </section>
+
+  <!-- 4. JS 是什麼 -->
+  <section class="slide" id="s-what">
+    <h2>JS 是什麼</h2>
+    <p><strong>JavaScript</strong>：瀏覽器內建的程式語言，負責網頁的<b>行為與互動</b></p>
+    <pre><code class="language-plaintext">HTML  結構     &lt;button&gt;隨機&lt;/button&gt;
+CSS   外觀     button { background: brown }
+JS    行為     按下去 → 隨機選一個、改畫面</code></pre>
+    <ul>
+      <li>和 HTML / CSS 不同，JS 是<b>真的程式語言</b>：有變數、判斷、迴圈、函式</li>
+      <li>寫在 <code>&lt;script&gt;</code> 裡，或用 <code>&lt;script src="app.js"&gt;</code> 外接</li>
+    </ul>
+    <div class="aside">
+      📜 <b>從哪來</b>：1995 年 Netscape 的 Brendan Eich <b>十天</b>趕工寫出來；
+      取名 JavaScript 是蹭當年 Java 的熱度，<b>兩者其實無關</b>；
+      2015 年 <b>ES6</b> 大改版是分水嶺——今天教的 <code>let</code> / <code>const</code>、樣板字串都是 ES6 之後的現代寫法，
+      看到舊教學滿滿 <code>var</code> 就知道年代了
+    </div>
+    <div class="aside">
+      🔗 <b>參考資料</b>：
+      <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting" target="_blank" rel="noopener">MDN JavaScript 動態腳本</a>
+    </div>
+  </section>
+
+  <!-- 5. Console 玩起來 -->
+  <section class="slide">
+    <h2>第一次寫 JS：Console 當計算機</h2>
+    <p>打開 DevTools 的 <b>Console</b> 分頁，直接打 JS、按 Enter 就跑</p>
+    <pre><code>1 + 1
+"好豆" + "咖啡"       // 字串相接 → "好豆咖啡"
+console.log("哈囉")   // 印出訊息，寫程式最常用的除錯法
+Math.random()        // 隨機一個 0~1 的數</code></pre>
+    <ul>
+      <li>Console 是你的<b>即時實驗場</b>：想試什麼語法，這裡打了馬上看結果</li>
+      <li><code>console.log(...)</code> 是最基本的除錯工具——把值印出來看</li>
+    </ul>
+    <div class="aside">
+      🔗 <b>參考資料</b>：
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Console_API" target="_blank" rel="noopener">MDN Console API</a>
+    </div>
+  </section>
+
+  <!-- 6. 變數 -->
+  <section class="slide" id="s-var">
+    <h2>變數：把值存起來</h2>
+    <pre><code>let count = 0;        // 可以之後改的變數
+count = count + 1;    // 現在是 1
+
+const name = "好豆";   // 不會再改的，用 const
+</code></pre>
+    <ul>
+      <li><code>let</code> 宣告「之後會變」的變數；<code>const</code> 宣告「不再改」的常數</li>
+      <li>（舊語法 <code>var</code> 現在少用，先記 <code>let</code> / <code>const</code>）</li>
+    </ul>
+    <div class="aside">
+      🐍 <b>對照 Python</b>：Python 直接 <code>count = 0</code>；JS 要先用 <code>let</code> / <code>const</code> 宣告，句尾習慣加 <code>;</code>
+    </div>
+  </section>
+
+  <!-- 7. 型別 -->
+  <section class="slide">
+    <h2>型別：值有哪些種類</h2>
+    <pre><code>let n = 42;            // number   （JS 不分整數/小數）
+let s = "拿鐵";         // string
+let ok = true;         // boolean  true / false
+let empty = null;      // 空值
+let arr = ["A", "B"];  // 陣列 array
+let obj = { price: 120 }; // 物件 object
+
+typeof n   // "number"</code></pre>
+    <div class="aside warn">
+      ⚠️ <b>浮點地雷</b>：number 一律是浮點數，小數運算有誤差——Console 敲一次：<br />
+      <code>0.1 + 0.2</code> → <code>0.30000000000000004</code>，所以 <code>0.1 + 0.2 === 0.3</code> 是 <code>false</code>！<br />
+      這不是 JS 獨有（Python 也一樣），處理金額常用「以<b>分</b>為單位存整數」避開
+    </div>
+    <div class="aside">
+      🐍 <b>對照 Python</b>：number↔int/float、string↔str、boolean↔bool（<code>True</code>/<code>False</code>）、null↔<code>None</code>、array↔list、object↔dict
+    </div>
+    <div class="aside">
+      🔗 <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Variables" target="_blank" rel="noopener">MDN 變數</a>、
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures" target="_blank" rel="noopener">MDN 型別</a>
+    </div>
+  </section>
+
+  <!-- 8. 運算與樣板字串 -->
+  <section class="slide">
+    <h2>運算、比較、樣板字串</h2>
+    <pre><code>10 / 3            // 3.333...
+"價格：" + 120     // 用 + 接字串
+
+const price = 120;
+`一杯 ${price} 元`  // 樣板字串，用反引號 + ${}
+
+3 === 3           // true（嚴格相等，用三個 =）
+3 === "3"         // false（型別不同）</code></pre>
+    <ul>
+      <li><b>樣板字串</b>（反引號 <code>`</code>）可以把變數用 <code>${ }</code> 塞進字串，超好用</li>
+      <li>比較一律用 <code>===</code>（嚴格相等），別用兩個 <code>==</code></li>
+    </ul>
+  </section>
+
+  <!-- 8.5 truthy / falsy -->
+  <section class="slide">
+    <h2>truthy / falsy：if 眼中的真與假</h2>
+    <p><code>if ( )</code> 裡不一定要放 boolean——<b>任何值</b>都會被當成真或假來看</p>
+    <pre><code>// 只有這 6 個是 falsy（被當成假），其他「全部」truthy
+false   0   ""    null   undefined   NaN
+//     零  空字串  空值   還沒給值    壞掉的數字
+
+if ("拿鐵") console.log("會印");    // 有內容的字串 → 真
+if ("")    console.log("不會印");   // 空字串 → 假
+if (0)     console.log("不會印");   // 0 → 假</code></pre>
+    <ul>
+      <li>背下<b>六個 falsy</b>就好，其他通通是 truthy</li>
+      <li>超常用：<code>if (name)</code> 一行同時擋掉「沒填」與「空字串」</li>
+    </ul>
+    <div class="aside warn">
+      ⚠️ <b>陷阱</b>：空陣列 <code>[]</code> 和空物件 <code>{}</code> 是 <b>truthy</b>！
+      <span class="muted">🐍 對照 Python：Python 的空 list / dict 當假，JS 剛好相反</span>
+    </div>
+    <div class="aside">
+      🔗 <b>參考資料</b>：
+      <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy" target="_blank" rel="noopener">MDN Truthy</a>、
+      <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy" target="_blank" rel="noopener">MDN Falsy</a>
+    </div>
+  </section>
+
+  <!-- 9. 條件與函式 -->
+  <section class="slide">
+    <h2>判斷與函式</h2>
+    <pre><code>if (price &gt; 100) {
+  console.log("小貴");
+} else {
+  console.log("可以");
+}
+
+function greet(name) {
+  return `歡迎 ${name}`;
+}
+greet("好豆");   // "歡迎 好豆"</code></pre>
+    <div class="aside">
+      🐍 <b>對照 Python</b>：Python 用<b>縮排</b>分段落；JS 用 <b>大括號 <code>{ }</code></b>，條件要包在 <code>( )</code> 裡
+    </div>
+  </section>
+
+  <!-- 10. 陣列與物件 -->
+  <section class="slide">
+    <h2>裝一組資料：陣列與物件</h2>
+    <pre><code>const menu = ["美式", "拿鐵", "卡布", "摩卡"];
+menu[0]        // "美式"（從 0 開始數）
+menu.length    // 4
+
+const drink = { name: "拿鐵", price: 120, hot: true };
+drink.name     // "拿鐵"</code></pre>
+    <ul>
+      <li><b>陣列</b> <code>[ ]</code>：一串有順序的值，用<b>索引</b>取（第一個是 0）</li>
+      <li><b>物件</b> <code>{ }</code>：一組「鍵: 值」，用<b>名字</b>取</li>
+    </ul>
+    <div class="aside">
+      🧩 等一下的「中餐轉盤」進階題題，就會把選項存進一個<b>陣列</b>
+    </div>
+  </section>
+
+  <!-- 11. DOM 是什麼 -->
+  <section class="slide" id="s-dom">
+    <h2>DOM：JS 操作網頁的橋樑</h2>
+    <p>瀏覽器把你的 HTML，變成一棵可以用程式操作的<strong>物件樹（DOM）</strong></p>
+    <pre><code class="language-plaintext">document                 整份文件
+ └─ html
+     └─ body
+         ├─ h1
+         └─ button        ← 每個標籤都是一個可操作的物件</code></pre>
+    <ul>
+      <li>呼應第 2 堂：Elements 面板看到的那棵樹，就是 DOM</li>
+      <li>JS 透過 DOM <b>讀取、修改</b>畫面上的元素——這是網頁互動的核心</li>
+    </ul>
+    <div class="aside">
+      🔗 <b>參考資料</b>：
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" target="_blank" rel="noopener">MDN DOM</a>
+    </div>
+  </section>
+
+  <!-- 12. 抓元素 -->
+  <section class="slide">
+    <h2>抓元素：querySelector</h2>
+    <pre><code>document.querySelector("h1")        // 第一個 h1
+document.querySelector(".coin")     // 第一個 class="coin"
+document.querySelector("#btn")      // id="btn"
+document.querySelectorAll(".coin")  // 全部符合的（一個清單）</code></pre>
+    <ul>
+      <li>用<b>你已經會的 CSS 選擇器</b>語法來抓元素，是一樣的東西</li>
+      <li>抓到後存進變數，接下來就能改它、對它綁事件</li>
+    </ul>
+    <div class="aside">
+      🔗 <b>參考資料</b>：
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector" target="_blank" rel="noopener">MDN querySelector</a>
+    </div>
+  </section>
+
+  <!-- 13. 改內容與樣式 -->
+  <section class="slide">
+    <h2>改畫面：textContent、classList</h2>
+    <pre><code>const title = document.querySelector("h1");
+title.textContent = "換掉的標題";   // 改文字
+
+const coin = document.querySelector(".coin");
+coin.classList.add("active");       // 加一個 class
+coin.classList.remove("active");    // 移除
+coin.classList.toggle("active");    // 有就拿掉、沒有就加上</code></pre>
+    <ul>
+      <li><code>textContent</code> 改文字內容</li>
+      <li><code>classList</code> 增減 class——搭配 CSS，就能用 JS <b>切換樣式</b></li>
+    </ul>
+    <div class="aside">
+      🆚 <b>相似三兄弟怎麼選</b>：<br />
+      <code>textContent</code>——元素裡的<b>全部文字</b>（含被 CSS 藏住的），讀寫都快，<b>預設用它</b><br />
+      <code>innerText</code>——只給「<b>眼睛看得到</b>」的文字，會受 CSS 影響、比較慢<br />
+      <code>innerHTML</code>——會把字串<b>當 HTML 解析</b>；塞使用者輸入會有 XSS 風險，這階段先不用
+    </div>
+    <div class="aside">
+      🔗 <b>參考資料</b>：
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/classList" target="_blank" rel="noopener">MDN classList</a>、
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent" target="_blank" rel="noopener">MDN textContent（含三者比較）</a>
+    </div>
+  </section>
+
+  <!-- 14. 事件 -->
+  <section class="slide" id="s-event">
+    <h2>聽事件：addEventListener</h2>
+    <pre><code>const btn = document.querySelector("#btn");
+
+btn.addEventListener("click", function () {
+  console.log("被按了！");
+});</code></pre>
+    <ul>
+      <li><b>事件</b>＝使用者做的動作：<code>click</code> 點擊、<code>input</code> 打字、<code>submit</code> 送出</li>
+      <li><code>addEventListener("click", 函式)</code>：當這個元素被點，就<b>執行那個函式</b></li>
+    </ul>
+    <div class="aside">
+      🔗 <b>參考資料</b>：
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener" target="_blank" rel="noopener">MDN addEventListener</a>
+    </div>
+  </section>
+
+  <!-- 15. 亂數 -->
+  <section class="slide">
+    <h2>隨機：Math.random</h2>
+    <pre><code>Math.random()              // 0（含）~ 1（不含）的小數
+
+Math.random() &lt; 0.5        // 一半機率 true → 拿來擲硬幣
+
+const menu = ["便當", "漢堡", "拉麵"];
+const i = Math.floor(Math.random() * menu.length);
+menu[i]                    // 隨機選一個品項</code></pre>
+    <ul>
+      <li><code>Math.random() &lt; 0.5</code>：五五波，正好拿來決定正面 / 反面</li>
+      <li><code>Math.floor(random * 長度)</code>：從陣列<b>隨機挑一個</b>的萬用公式</li>
+    </ul>
+    <div class="aside">
+      🔗 <b>參考資料</b>：
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random" target="_blank" rel="noopener">MDN Math.random</a>
+    </div>
+  </section>
+
+  <!-- 16. 串起來：最小互動 -->
+  <section class="slide">
+    <h2>串起來：一個最小互動</h2>
+    <pre><code>&lt;button id="btn"&gt;點我&lt;/button&gt;
+&lt;p id="out"&gt;還沒點&lt;/p&gt;
+
+&lt;script&gt;
+  const btn = document.querySelector("#btn");
+  const out = document.querySelector("#out");
+  btn.addEventListener("click", function () {
+    out.textContent = "你點了！" + Math.random().toFixed(2);
+  });
+&lt;/script&gt;</code></pre>
+    <p class="muted">抓元素 <b class="arw">→</b> 綁事件 <b class="arw">→</b> 事件裡改畫面：幾乎所有互動都是這個三步驟</p>
+  </section>
+
+  <!-- 17. 小練習 A -->
+  <section class="slide">
+    <div class="exercise">
+      <span class="tag">小練習 A · 熱身</span>
+      <h2 style="margin-top:0">按一下，正反面切換</h2>
+      <ul class="checklist">
+        <li>⬜️<span>一個按鈕 + 一個 <code>&lt;p&gt;</code> 顯示「正面」</span></li>
+        <li>⬜️<span><code>addEventListener("click", …)</code> 綁到按鈕</span></li>
+        <li>⬜️<span>每次點擊，用 <code>textContent</code> 在「正面 / 反面」間切換</span></li>
+        <li>⬜️<span>先不用亂數，純粹熟悉「抓元素 <b class="arw">→</b> 綁事件 <b class="arw">→</b> 改畫面」</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 18. 主成品拆解 -->
+  <section class="slide">
+    <h2>主成品：擲硬幣</h2>
+    <p>需求：兩個方塊「正面 / 反面」，按「隨機」<b class="arw">→</b> 隨機高亮其中一個</p>
+    <pre><code>&lt;!-- HTML --&gt;
+&lt;div class="coins"&gt;
+  &lt;div class="coin" id="head"&gt;正面&lt;/div&gt;
+  &lt;div class="coin" id="tail"&gt;反面&lt;/div&gt;
+&lt;/div&gt;
+&lt;button id="flip"&gt;隨機&lt;/button&gt;
+
+/* CSS：高亮用一個 class */
+.coin.active { background: gold; font-weight: bold; }</code></pre>
+    <p class="muted">拆成三塊：HTML 結構、CSS 的高亮樣式、JS 的隨機邏輯</p>
+  </section>
+
+  <!-- 19. 擲硬幣 JS -->
+  <section class="slide">
+    <h2>擲硬幣：JS 邏輯</h2>
+    <pre><code>const head = document.querySelector("#head");
+const tail = document.querySelector("#tail");
+const flip = document.querySelector("#flip");
+
+flip.addEventListener("click", function () {
+  head.classList.remove("active");   // 先清掉舊的高亮
+  tail.classList.remove("active");
+  if (Math.random() &lt; 0.5) {
+    head.classList.add("active");    // 一半機率正面
+  } else {
+    tail.classList.add("active");    // 一半機率反面
+  }
+});</code></pre>
+    <p class="muted">全部都是這堂學過的：querySelector、addEventListener、classList、Math.random</p>
+  </section>
+
+  <!-- 20. 練習（主） -->
+  <section class="slide">
+    <div class="exercise">
+      <span class="tag">練習 · 主線</span>
+      <h2 style="margin-top:0">做出擲硬幣，並上線</h2>
+      <ul class="checklist">
+        <li>⬜️<span>照著把 HTML / CSS / JS 三塊拼起來，本機打開能動</span></li>
+        <li>⬜️<span>按「隨機」，確認每次只有一個方塊被高亮</span></li>
+        <li>⬜️<span><code>commit + push</code> 到你的 GitHub Pages（呼應第 1 堂）</span></li>
+        <li>⬜️<span>把<b>公開網址</b>貼到課程共筆，讓大家點開玩你的擲硬幣</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 21. 進階題 -->
+  <section class="slide">
+    <div class="exercise">
+      <span class="tag">進階題 (無詳解)</span>
+      <h2 style="margin-top:0">中餐轉盤「今天吃什麼」</h2>
+      <p class="muted">把兩個方塊，改成多個選項的隨機決定器</p>
+      <ul class="checklist">
+        <li>⬜️<span>選項存進<b>陣列</b>：<code>["便當","漢堡","三明治","牛肉麵","拉麵"]</code></span></li>
+        <li>⬜️<span>用 <code>Math.floor(Math.random() * 長度)</code> 隨機挑一個索引</span></li>
+        <li>⬜️<span>把選中的那個方塊加上 <code>active</code> 高亮</span></li>
+        <li>⬜️<span>用 <code>querySelectorAll</code> 先把所有方塊的高亮清掉，再點亮中選的</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 22. 延伸作業 -->
+  <section class="slide">
+    <div class="exercise">
+      <span class="tag">延伸作業 · 挑戰</span>
+      <h2 style="margin-top:0">讓它有動畫</h2>
+      <ul class="checklist">
+        <li>⬜️<span>高亮切換時加 <code>transition</code>，讓顏色變化不生硬</span></li>
+        <li>⬜️<span>用 <code>@keyframes</code> + <code>transform</code> 做一個旋轉 / 抖動效果</span></li>
+        <li>⬜️<span>點擊後短暫「洗牌」快速閃動，再定在結果上</span></li>
+      </ul>
+      <p class="muted">動畫是 CSS 的延伸題，卡住就先交出會動的版本，行有餘力再加</p>
+    </div>
+  </section>
+
+  <!-- 23. 這堂學會了什麼 -->
+  <section class="slide">
+    <h2>這堂我們學會了什麼
+    </h2>
+    <ul class="recap-cards recap">
+      <li>
+        <div class="head">✅ <b><a href="#s-what">JS 與 Console</a></b>：頁面的行為層</div>
+        <div class="recap-sub">
+          <span>真正的程式語言</span>
+          <span>寫在 &lt;script&gt;</span>
+          <span>Console 即時實驗、console.log</span>
+        </div>
+        <div class="recap-ext">
+          <details open><summary>課堂延伸：script 的 defer/async 載入時機、模組 import/export</summary>
+            <div class="refs">
+              <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting" target="_blank" rel="noopener">MDN 動態腳本</a>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/Console_API" target="_blank" rel="noopener">MDN Console</a>
+            </div>
+          </details>
+        </div>
+      </li>
+      <li>
+        <div class="head">✅ <b><a href="#s-var">變數與型別</a></b>：對照 Python</div>
+        <div class="recap-sub">
+          <span>let / const</span>
+          <span>number / string / boolean / null</span>
+          <span>陣列 [ ]、物件 { }、樣板字串</span>
+          <span>六個 falsy、浮點誤差</span>
+        </div>
+        <div class="recap-ext">
+          <details open><summary>課堂延伸：迴圈、陣列 map/filter/forEach、箭頭函式（明天深入）</summary>
+            <div class="refs">
+              <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Variables" target="_blank" rel="noopener">MDN 變數</a>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures" target="_blank" rel="noopener">MDN 型別</a>
+            </div>
+          </details>
+        </div>
+      </li>
+      <li>
+        <div class="head">✅ <b><a href="#s-dom">DOM 操作</a></b>：抓元素、改畫面</div>
+        <div class="recap-sub">
+          <span>DOM 是可操作的物件樹</span>
+          <span>querySelector(All)</span>
+          <span>textContent、classList</span>
+        </div>
+        <div class="recap-ext">
+          <details open><summary>課堂延伸：建立/刪除節點、innerHTML 的風險、由資料動態渲染清單（明天）</summary>
+            <div class="refs">
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" target="_blank" rel="noopener">MDN DOM</a>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector" target="_blank" rel="noopener">MDN querySelector</a>
+            </div>
+          </details>
+        </div>
+      </li>
+      <li>
+        <div class="head">✅ <b><a href="#s-event">事件與亂數</a></b>：讓它互動</div>
+        <div class="recap-sub">
+          <span>addEventListener('click', fn)</span>
+          <span>Math.random 擲硬幣 / 抽選</span>
+          <span>抓→綁→改 三步驟</span>
+        </div>
+        <div class="recap-ext">
+          <details open><summary>課堂延伸：event 物件、事件冒泡與委派、表單事件 + 阻止預設行為</summary>
+            <div class="refs">
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener" target="_blank" rel="noopener">MDN addEventListener</a>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random" target="_blank" rel="noopener">MDN Math.random</a>
+            </div>
+          </details>
+        </div>
+      </li>
+    </ul>
+    <div class="aside" style="margin-top:0">
+      💡 <b>最佳實務</b>：卡住先看 <b>Console 的紅字</b>——它幾乎都會告訴你哪一行、什麼錯
+    </div>
+  </section>
+
+  <!-- 24. 收尾 -->
+  <section class="slide center">
+    <h2>本堂達成</h2>
+    <p>✅ 你把 <strong>HTML / CSS / JS 三種語言合體</strong>，做出會互動的擲硬幣並<strong>上線</strong></p>
+    <p class="muted">最後一堂回顧：把今天一整天串起來，看見前端的藍圖</p>
+  </section>
+
+  <div class="pageno"></div>
+  <script src="../vendor/highlight.min.js"></script>
+  <script src="../slides.js"></script>
+</body>
+</html>
+
